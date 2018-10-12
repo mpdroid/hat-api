@@ -1,0 +1,24 @@
+dialect  "java"
+
+rule "Black Hair - Gryffindor"
+    when
+        $pledge: sortinghat.Student (getHairColor().equalsIgnoreCase("black"));
+    then
+        $pledge.setHouse("Gryffindor");
+end
+
+rule "Silver Hair - Slytherin"
+    when
+        $pledge: sortinghat.Student (getHairColor().equalsIgnoreCase("silver"));
+    then
+        $pledge.setHouse("Slytherin");
+end
+
+rule "Other Hair - Ravenclaw"
+    when
+        $pledge: sortinghat.Student (!getHairColor().equalsIgnoreCase("silver") &&
+        !getHairColor().equalsIgnoreCase("black")
+        );
+    then
+        $pledge.setHouse("Ravenclaw");
+end
