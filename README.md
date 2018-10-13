@@ -16,7 +16,7 @@ Draco, Malfoy, , male, 1980-03-01, 1000000000, silver
 ### /rosters/:id
 ### GET
 ### Required:
-id=[long]
+id=[long]  
 Retrieves a roster given roster id e.g.
 ```
 {
