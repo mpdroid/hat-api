@@ -1,6 +1,7 @@
 dialect  "java"
 
 rule "Black Hair - Gryffindor"
+       salience 10
     when
         $pledge: sortinghat.Student (getHairColor().equalsIgnoreCase("black"));
     then
@@ -8,17 +9,44 @@ rule "Black Hair - Gryffindor"
 end
 
 rule "Silver Hair - Slytherin"
+       salience 10
     when
         $pledge: sortinghat.Student (getHairColor().equalsIgnoreCase("silver"));
     then
         $pledge.setHouse("Slytherin");
 end
 
-rule "Other Hair - Ravenclaw"
+rule "Super Rich"
+       salience 20
     when
-        $pledge: sortinghat.Student (!getHairColor().equalsIgnoreCase("silver") &&
-        !getHairColor().equalsIgnoreCase("black")
-        );
+        $pledge: sortinghat.Student (getNetWorth() > 10000000)
+    then
+        $pledge.setHouse("Slytherin");
+end
+
+rule "Group 0"
+       salience 30
+    when
+        $pledge: sortinghat.Student (getHouse().equalsIgnoreCase("unassigned") &&
+                        getRandomGroup() == 0)
+    then
+        $pledge.setHouse("Gryffindor");
+end
+
+rule "Group 1"
+       salience 30
+    when
+        $pledge: sortinghat.Student (getHouse().equalsIgnoreCase("unassigned") &&
+                        getRandomGroup() == 1)
     then
         $pledge.setHouse("Ravenclaw");
+end
+
+rule "Group 2"
+       salience 30
+    when
+        $pledge: sortinghat.Student (getHouse().equalsIgnoreCase("unassigned") &&
+                        getRandomGroup() == 2)
+    then
+        $pledge.setHouse("Hufflepuff");
 end

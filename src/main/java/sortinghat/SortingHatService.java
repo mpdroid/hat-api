@@ -17,9 +17,12 @@ class SortingHatService {
     @Autowired
     Ruminator ruminator;
 
+    Random random;
+
     List<Roster> rosters;
 
     SortingHatService() {
+        random = new Random();
         System.out.println("Initializing rosters************");
         List<Student> students = new ArrayList<Student>();
 
@@ -30,11 +33,12 @@ class SortingHatService {
                 .lastName("Potter")
                 .nameSuffix("")
                 .hairColor("black")
-                .netWorth("1000000")
+                .netWorth(1000000L)
                 .gender("male")
                 .dob(getDate(1980, 6, 30))
                 .house("Gryffindor")
                 .howAssigned("hair color: black")
+                .randomGroup(random.nextInt(3))
                 .build();
         students.add(harry);
 
@@ -45,11 +49,12 @@ class SortingHatService {
                 .lastName("Malfoy")
                 .nameSuffix("")
                 .hairColor("silver")
-                .netWorth("1 billion")
+                .netWorth(1000000000L)
                 .gender("male")
                 .dob(getDate(1980, 1, 30))
                 .house("Slytherin")
                 .howAssigned("hair color: silver")
+                .randomGroup(random.nextInt(3))
                 .build();
         students.add(draco);
 
@@ -65,18 +70,21 @@ class SortingHatService {
 
     }
 
-    List<Roster> getRosters() {
-        rosters.sort(new Comparator<Roster>() {
-            @Override
-            public int compare(Roster o1, Roster o2) {
-                return o2.getSubmitDate().compareTo(o1.getSubmitDate());
-            }
-        });
-        return rosters;
-    }
+    Roster getRoster(Long rosterId) {
 
-    Optional<Roster> getRoster(Long rosterId) {
-        return rosters.stream().filter(roster -> roster.getId().equals(rosterId)).findFirst();
+        System.out.println("Number of rosters outstanding: " + rosters.size());
+        Optional<Roster> found = rosters.stream().filter(roster -> roster.getId().equals(rosterId)).findFirst();
+        if (found.isPresent()) {
+            Roster ret = found.get();
+            if (ret.isHasTheHatDecided()) {
+                rosters.removeIf(roster -> roster.getId().equals(rosterId));
+                System.out.println("Number of rosters outstanding: " + rosters.size());
+            }
+            return ret;
+        } else {
+            throw new NotFoundException("Roster " + rosterId + " does not exist!");
+        }
+
     }
 
     Date getDate(int year, int month, int day) {
@@ -87,44 +95,10 @@ class SortingHatService {
         return cal.getTime();
     }
 
-    String getSampleTxt() {
-        StringBuffer buf = new StringBuffer("id," +
-                "firstName, " +
-                "lastName, " +
-                "nameSuffix, " +
-                "gender, " +
-                "dob, " +
-                "netWorth, " +
-                "hairColor");
-        for (Student student : rosters.get(0).getStudents()) {
-            buf.append("\n");
-            buf.append(student.getId());
-            buf.append(", ");
-            buf.append(student.getFirstName());
-            buf.append(", ");
-            buf.append(student.getLastName());
-            buf.append(", ");
-            buf.append(student.getNameSuffix());
-            buf.append(", ");
-            buf.append(student.getGender());
-            buf.append(", ");
-            String pattern = "yyyy-MM-dd";
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-            String dob = simpleDateFormat.format(student.getDob());
-            buf.append(dob);
-            buf.append(", ");
-            buf.append(student.getNetWorth());
-            buf.append(", ");
-            buf.append(student.getHairColor());
-        }
-        return buf.toString();
-    }
-
-    void addRoster(MultipartFile file) {
+    Roster addRoster(MultipartFile file) {
         try {
-
             List<Student> pledges = readInPledges(file);
-            long nextId = rosters.size();
+            long nextId = (new Date()).getTime();
             Roster roster = Roster.builder()
                     .id(nextId)
                     .submitDate(new Date())
@@ -132,10 +106,12 @@ class SortingHatService {
                     .build();
             rosters.add(roster);
             ruminator.ruminate(roster);
-            System.out.println("Rumination thread started");
+            return roster;
+        } catch (InvalidFileException ef) {
+            throw ef;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new InvalidFileException(e.getMessage());
+            throw new RuntimeException("Internal Hat problem. Try again later...");
         }
     }
 
@@ -156,7 +132,8 @@ class SortingHatService {
                 continue;
             try {
                 final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                Date dob = sdf.parse(tokens[4]);
+                Date dob = sdf.parse(tokens[4].trim());
+                Long netWorth = Long.parseLong(tokens[5].trim());
                 Student student = Student.builder()
                         .id(new Long(lineNum))
                         .firstName(tokens[0].trim())
@@ -164,9 +141,10 @@ class SortingHatService {
                         .nameSuffix(tokens[2].trim())
                         .gender(tokens[3].trim())
                         .dob(dob)
-                        .netWorth(tokens[5].trim())
+                        .netWorth(netWorth)
                         .hairColor(tokens[6].trim())
                         .house("Unassigned")
+                        .randomGroup(random.nextInt(3))
                         .build();
                 pledges.add(student);
             } catch (Exception ex) {

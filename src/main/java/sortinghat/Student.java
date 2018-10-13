@@ -16,8 +16,9 @@ public class Student {
     String nameSuffix;
     String gender;
     Date dob;
-    String netWorth;
+    Long netWorth;
     String hairColor;
     String house = "unassigned";
     String howAssigned;
+    int randomGroup;
 }

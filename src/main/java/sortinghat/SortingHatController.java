@@ -7,9 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 public class SortingHatController {
@@ -20,27 +18,8 @@ public class SortingHatController {
     @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(path = "/rosters/{id}", method = RequestMethod.GET)
     public Roster getRoster(@PathVariable Long id) {
-        Optional<Roster> rosterOptional = sortingHatService.getRoster(id);
-        if (rosterOptional.isPresent()) {
-            return rosterOptional.get();
-        } else {
-            throw new NotFoundException("Roster " + id + " does not exist!");
-        }
+        return sortingHatService.getRoster(id);
 
-    }
-
-    @CrossOrigin(origins = "http://localhost:4200")
-    @RequestMapping(path = "/rosters", method = RequestMethod.GET)
-    public List<Roster> getRosters() {
-        return sortingHatService.getRosters();
-    }
-
-    @CrossOrigin(origins = "http://localhost:4200")
-    @RequestMapping(path = "/sample", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public Map getSampleTxt() {
-
-        return Collections.singletonMap("response", sortingHatService.getSampleTxt());
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
@@ -58,12 +37,12 @@ public class SortingHatController {
     public Map handleFileUpload(@RequestParam("file") MultipartFile file,
                                 RedirectAttributes redirectAttributes) {
         validateFile(file);
-        sortingHatService.addRoster(file);
-        return Collections.singletonMap("response", "Success");
+        Roster roster = sortingHatService.addRoster(file);
+        return Collections.singletonMap("response", roster);
     }
 
     private void validateFile(MultipartFile file) {
         if (!file.getContentType().equalsIgnoreCase("text/plain"))
-            throw new InvalidFileException("Not a text file");
+            throw new InvalidFileException("It is not a text file");
     }
 }
