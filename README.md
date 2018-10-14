@@ -7,9 +7,9 @@ The Sorting Hart API provides rest services to assign pledges to Hogwarts houses
 ### POST
 Uploads a roster file for sorting, e.g. 
 ```
-First Name, Last Name, Suffix, Gender, Date of Birth, Net Worth, Hair Color
-Harry, Potter, , male, 1980-07-30, 1000000, black
-Draco, Malfoy, , male, 1980-03-01, 1000000000, silver
+First Name, Last Name, Suffix, Gender, Date of Birth, Net Worth, Hair Color, Elves Owned, Dementors Battled
+Harry, Potter, , male, 1980-07-30, 1000000, black, 0, 5
+Draco, Malfoy, , male, 1980-03-01, 1000000000, silver, 5, 0
 ```
 
 ## Get a roster
