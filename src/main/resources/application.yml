@@ -6,3 +6,24 @@ spring:
     http:
         multipart:
             enabled: false
+java:
+    util:
+        logging:
+            config:
+                file:
+                    value: "WEB-INF/classes/logging.properties"
+management:
+    endpoints:
+        web:
+            cors:
+                allowed-origins: http://localhost:4200
+
+---
+spring:
+    profiles: prod
+
+management:
+    endpoints:
+        web:
+            cors:
+                allowed-origins: http://storage.googleapis.com/hat-web-01

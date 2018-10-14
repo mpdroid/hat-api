@@ -9,20 +9,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Collections;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 public class SortingHatController {
 
     @Autowired
     SortingHatService sortingHatService;
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(path = "/rosters/{id}", method = RequestMethod.GET)
     public Roster getRoster(@PathVariable Long id) {
         return sortingHatService.getRoster(id);
 
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(path = "/roster/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Map getRosterAsTxt(@PathVariable("id") Long id) {
@@ -31,7 +30,6 @@ public class SortingHatController {
     }
 
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(path = "/roster", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Map handleFileUpload(@RequestParam("file") MultipartFile file,
