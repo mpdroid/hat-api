@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.TimeUnit;
-
 @Component
 public class Ruminator {
 
@@ -18,18 +16,20 @@ public class Ruminator {
     @Async
     public void ruminate(Roster roster) {
 
-        try {
-            TimeUnit.SECONDS.sleep(10);
-        } catch (InterruptedException ie) {
-            ie.printStackTrace();
-        }
+//        try {
+//            TimeUnit.SECONDS.sleep(10);
+//        } catch (InterruptedException ie) {
+//            ie.printStackTrace();
+//        }
         roster.getStudents().stream().forEach(student -> {
 
             KieSession kieSession = kieContainer.newKieSession();
+            Explanator explanator = new Explanator();
+            kieSession.addEventListener(explanator);
             kieSession.insert(student);
             kieSession.fireAllRules();
             kieSession.dispose();
-            student.setHowAssigned("rule");
+            student.setRulesFired(explanator.rulesFired());
         });
         roster.setHasTheHatDecided(true);
     }

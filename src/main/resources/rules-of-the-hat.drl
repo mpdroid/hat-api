@@ -1,52 +1,89 @@
 dialect  "java"
 
-rule "Black Hair - Gryffindor"
-       salience 10
+rule "Hair color is Black"
+       salience 100
     when
         $pledge: sortinghat.Student (getHairColor().equalsIgnoreCase("black"));
     then
         $pledge.setHouse("Gryffindor");
+        retract( $pledge );
 end
 
-rule "Silver Hair - Slytherin"
-       salience 10
+rule "Hair Color is Silver"
+       salience 100
     when
         $pledge: sortinghat.Student (getHairColor().equalsIgnoreCase("silver"));
     then
         $pledge.setHouse("Slytherin");
+        retract( $pledge );
 end
 
 rule "Super Rich"
-       salience 20
+       salience 90
     when
         $pledge: sortinghat.Student (getNetWorth() > 10000000)
     then
         $pledge.setHouse("Slytherin");
+        retract( $pledge );
 end
 
-rule "Group 0"
+rule "Not Brave"
+       salience 80
+    when
+        $pledge: sortinghat.Student (getDementorsBattled() == 0)
+    then
+        $pledge.setHouse("Slytherin");
+        retract( $pledge );
+end
+
+rule "Brave"
+       salience 80
+    when
+        $pledge: sortinghat.Student (getDementorsBattled() > 0)
+    then
+end
+
+
+rule "Mean"
+       salience 70
+    when
+        $pledge: sortinghat.Student (getElvesOwned() > 0)
+    then
+        $pledge.setHouse("Slytherin");
+        retract( $pledge );
+end
+
+rule "Nice"
+       salience 70
+    when
+        $pledge: sortinghat.Student (getElvesOwned() == 0)
+    then
+end
+
+rule "Random Group 1"
        salience 30
     when
-        $pledge: sortinghat.Student (getHouse().equalsIgnoreCase("unassigned") &&
-                        getRandomGroup() == 0)
+        $pledge: sortinghat.Student (getRandomGroup() == 0)
     then
         $pledge.setHouse("Gryffindor");
+        retract( $pledge );
+
 end
 
-rule "Group 1"
+rule "Random Group 2"
        salience 30
     when
-        $pledge: sortinghat.Student (getHouse().equalsIgnoreCase("unassigned") &&
-                        getRandomGroup() == 1)
+        $pledge: sortinghat.Student (getRandomGroup() == 1)
     then
         $pledge.setHouse("Ravenclaw");
+        retract( $pledge );
 end
 
-rule "Group 2"
+rule "Random Group 3"
        salience 30
     when
-        $pledge: sortinghat.Student (getHouse().equalsIgnoreCase("unassigned") &&
-                        getRandomGroup() == 2)
+        $pledge: sortinghat.Student (getRandomGroup() == 2)
     then
         $pledge.setHouse("Hufflepuff");
+        retract( $pledge );
 end

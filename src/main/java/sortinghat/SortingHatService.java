@@ -36,8 +36,10 @@ class SortingHatService {
                 .netWorth(1000000L)
                 .gender("male")
                 .dob(getDate(1980, 6, 30))
+                .elvesOwned(0)
+                .dementorsBattled(5)
                 .house("Gryffindor")
-                .howAssigned("hair color: black")
+                .rulesFired(new String[]{"hair color is black"})
                 .randomGroup(random.nextInt(3))
                 .build();
         students.add(harry);
@@ -52,8 +54,10 @@ class SortingHatService {
                 .netWorth(1000000000L)
                 .gender("male")
                 .dob(getDate(1980, 1, 30))
+                .elvesOwned(5)
+                .dementorsBattled(0)
                 .house("Slytherin")
-                .howAssigned("hair color: silver")
+                .rulesFired(new String[]{"hair color is silver"})
                 .randomGroup(random.nextInt(3))
                 .build();
         students.add(draco);
@@ -128,12 +132,14 @@ class SortingHatService {
             }
 
             String[] tokens = str.split(",");
-            if (tokens.length < 7)
+            if (tokens.length < 9)
                 continue;
             try {
                 final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Date dob = sdf.parse(tokens[4].trim());
                 Long netWorth = Long.parseLong(tokens[5].trim());
+                int elvesOwned = Integer.parseInt(tokens[7].trim());
+                int dementorsBattled = Integer.parseInt(tokens[8].trim());
                 Student student = Student.builder()
                         .id(new Long(lineNum))
                         .firstName(tokens[0].trim())
@@ -143,8 +149,11 @@ class SortingHatService {
                         .dob(dob)
                         .netWorth(netWorth)
                         .hairColor(tokens[6].trim())
+                        .elvesOwned(elvesOwned)
+                        .dementorsBattled(dementorsBattled)
                         .house("Unassigned")
                         .randomGroup(random.nextInt(3))
+                        .rulesFired(new String[]{})
                         .build();
                 pledges.add(student);
             } catch (Exception ex) {

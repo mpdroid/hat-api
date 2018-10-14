@@ -17,8 +17,14 @@ public class Student {
     String gender;
     Date dob;
     Long netWorth;
+    int elvesOwned;
+    int dementorsBattled;
     String hairColor;
     String house = "unassigned";
-    String howAssigned;
+    String[] rulesFired;
     int randomGroup;
+
+    public boolean notAssigned() {
+        return house.equalsIgnoreCase("unassigned");
+    }
 }
