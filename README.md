@@ -30,12 +30,16 @@ Retrieves a roster given roster id e.g.
             "lastName": "Potter",
             "nameSuffix": "",
             "gender": "male",
-            "dob": "1980-07-30T05:00:00.000+0000",
+            "dob": "1980-07-29T00:00:00.000+0000",
             "netWorth": 1000000,
             "hairColor": "black",
+            "elvesOwned": 0,
+            "dementorsBattled": 5,
+            "randomGroup": 2,
             "house": "Gryffindor",
-            "howAssigned": "rule",
-            "randomGroup": 0
+            "rulesFired": [
+                "Hair color is Black"
+            ]
         }
     ]
 }
