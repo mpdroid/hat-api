@@ -5,7 +5,7 @@ The Sorting Hat API provides rest services to assign pledges to Hogwarts houses 
 ## Upload a roster file
 ### /roster
 ### POST
-Uploads a roster file for sorting, e.g. 
+Uploads a roster file (in csv format) for sorting, e.g. 
 ```
 First Name, Last Name, Suffix, Gender, Date of Birth, Net Worth, Hair Color, Elves Owned, Dementors Battled
 Harry, Potter, , male, 1980-07-30, 1000000, black, 0, 5
