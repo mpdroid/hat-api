@@ -1,6 +1,6 @@
 # Sorting Hat API
 
-The Sorting Hat API provides rest services to assign pledges to Hogwarts houses using the "Rules of the Hat". The API is consumed by the [Sorting Hat](https://goo.gl/2Dwjh5) Web App.
+The Sorting Hat API provides rest services to assign pledges to Hogwarts houses using the "Rules of the Hat". The API is consumed by the [Sorting Hat](https://goo.gl/2Dwjh5) Web App ([repo](https://github.com/mpdroid/hat-web/blob/master/README.md)).
 
 ## Upload a roster file
 ### /roster
@@ -45,10 +45,9 @@ Retrieves a roster given roster id e.g.
 }
 ```
 
-The API is consumed by the [Sorting Hat Web App](https://github.com/mpdroid/hat-web/blob/master/README.md).
 
 Demonstrates the use of;
-- Spring-Boot
+- Spring Boot
 - Rest API
 - Drools rule engine
 
